@@ -936,6 +936,33 @@ class TfLiteAudioStream : public TfLiteAudioStreamBase {
     return p_tensor_buffer;
   }
 
+  //cleanup call 
+  virtual void end() {
+    TRACED();
+    // Delete the interpreter if it was created
+    if (p_interpreter != nullptr) {
+        delete p_interpreter;
+        p_interpreter = nullptr;
+    }
+
+    // Delete the model if it was loaded
+    if (p_model != nullptr) {
+        delete p_model;
+        p_model = nullptr;
+    }
+
+    // Free the memory allocated for the tensor arena
+    if (p_tensor_arena != nullptr) {
+        delete[] p_tensor_arena;
+        p_tensor_arena = nullptr;
+    }
+
+    // Reset other relevant variables
+    is_setup = false;
+    p_tensor = nullptr;
+    p_tensor_buffer = nullptr;
+  }
+
  protected:
   const tflite::Model* p_model = nullptr;
   tflite::MicroInterpreter* p_interpreter = nullptr;
@@ -1012,3 +1039,4 @@ class TfLiteAudioStream : public TfLiteAudioStreamBase {
 };
 
 }  // namespace audio_tools
+
