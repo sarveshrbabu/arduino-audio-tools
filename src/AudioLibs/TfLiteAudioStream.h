@@ -809,6 +809,26 @@ class TfLiteAudioStream : public TfLiteAudioStreamBase {
     if (p_tensor_arena != nullptr) delete[] p_tensor_arena;
   }
 
+  /// Allocate the tensor arena
+  bool allocateTensorArena() {
+    if (p_tensor_arena == nullptr) {
+      p_tensor_arena = new uint8_t[cfg.kTensorArenaSize];
+      if (p_tensor_arena == nullptr) {
+        LOGE("Failed to allocate tensor arena");
+        return false;
+      }
+    }
+    return true;
+  }
+
+  /// Free the tensor arena
+  void freeTensorArena() {
+    if (p_tensor_arena != nullptr) {
+      delete[] p_tensor_arena;
+      p_tensor_arena = nullptr;
+    }
+  }
+
 
   /// Optionally define your own p_interpreter
   void setInterpreter(tflite::MicroInterpreter* p_interpreter) {
@@ -1039,4 +1059,3 @@ class TfLiteAudioStream : public TfLiteAudioStreamBase {
 };
 
 }  // namespace audio_tools
-
