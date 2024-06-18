@@ -1286,16 +1286,16 @@ class TfLiteAudioStream : public TfLiteAudioStreamBase {
     if (p_tensor_arena != nullptr) delete[] p_tensor_arena;
   }
   /// Allocate the tensor arena
-  bool allocateTensorArena() {
+  void allocateTensorArena() {
     if (p_tensor_arena == nullptr) {
       p_tensor_arena = new uint8_t[cfg.kTensorArenaSize];
       if (p_tensor_arena == nullptr) {
         LOGE("Failed to allocate tensor arena");
-        return false;
       }
     }
-    return true;
   }
+
+
 
   /// Free the tensor arena
   void freeTensorArena() {
